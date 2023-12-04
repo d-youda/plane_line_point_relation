@@ -81,3 +81,22 @@ def point_and_plane(root,ax,point,plane):
     distance = point_and_plane_distance(point, plane)
     label = tk.Label(root, text=f"점과 평면 사이의 거리: {distance}")
     return label
+
+def points_and_mid_points_plane(root,ax,orbitale_1,orbitale_2,porion_1,porion_2):
+    orbitale_1 = np.array([int(point) for point in orbitale_1])
+    orbitale_2 = np.array([int(point) for point in orbitale_2])
+    porion_1 = np.array([int(point) for point in porion_1])
+    porion_2 = np.array([int(point) for point in porion_2])
+
+    mid_porion = np.array([int((porion_2[0]+porion_1[0])/2),(porion_2[1]+porion_1[1])/2,(porion_2[2]+porion_1[2])/2])
+    draw_point(ax,orbitale_1)
+    draw_point(ax,orbitale_2)
+    draw_point(ax,porion_1)
+    draw_point(ax,porion_2)
+    draw_point(ax,mid_porion)
+
+    #평면 그리기
+    plane = three_point_plane(orbitale_1, orbitale_2, mid_porion)
+    label = draw_plane(root,ax,plane)
+    
+    return label

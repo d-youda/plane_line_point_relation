@@ -4,7 +4,7 @@ from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 from cube import plot_cube
-from action_function import three_point_make_plane,two_plane_angles,plane_and_line_angle,two_points_distance,point_and_plane_distance
+from action_function import three_point_make_plane,two_plane_angles,plane_and_line_angle,two_points_distance,point_and_plane_distance,point_and_mid_point_plane
 
 root = tk.Tk()
 root.title("3D 큐브에 그리는 화면")
@@ -28,6 +28,8 @@ def two_point_event():
     two_points_distance(root,ax,canvas)
 def plane_and_point_event():
     point_and_plane_distance(root,ax,canvas)
+def point_and_mid_point_event():
+    point_and_mid_point_plane(root,ax,canvas)
 def show_plane_button():
     #평면과 관련된 연산들
     three_point_button = tk.Button(root, text="세 점을 잇는 평면 그리기", command=three_point_event)
@@ -48,6 +50,8 @@ def show_point_button():
     two_point_distance.pack(side=tk.TOP,pady=10)
     point_and_plane = tk.Button(root, text="점과 평면 사이 거리 구하기", command=plane_and_point_event)
     point_and_plane.pack(side=tk.TOP,pady=10)
+    point_mid_point = tk.Button(root, text="좌/우 orbitale 두 점과 좌/우 portion의 중간 점을 지나는 평면",command=point_and_mid_point_event)
+    point_mid_point.pack(side=tk.TOP, pady=10)
 
 button1 = tk.Button(root, text="평면",command=show_plane_button,width=20)
 button1.pack(side=tk.TOP, pady=20)

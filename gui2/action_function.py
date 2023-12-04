@@ -1,5 +1,5 @@
 import tkinter as tk
-from button import add_point,add_plane,add_plane_and_line,two_point,point_and_plane
+from button import add_point,add_plane,add_plane_and_line,two_point,point_and_plane,points_and_mid_points_plane
 from text_label import entry_label
 from math_method.plane import two_plane_angle
 def three_point_make_plane(root,ax,canvas):
@@ -111,3 +111,28 @@ def point_and_plane_distance(root, ax, canvas):
 
     button_add_plane = tk.Button(root, text="Calculate distance and add figure!", command=point_plane_distance)
     button_add_plane.pack(pady=10)
+
+def point_and_mid_point_plane(root,ax,canvas):
+    def point_mid_point_plane(ax=ax, canvas=canvas):
+        try:
+            orbitale_entry_1 = orbitale_entry_1.get().split(",")
+            orbitale_entry_2 = orbitale_entry_2.get().split(",")
+            portion_entry_1 = portion_entry_1.get().split(",")
+            portion_entry_2 = portion_entry_2.get().split(",")
+            #그리기만 학 ㅣ때문에 따로 return 하는 값 없음
+            points_and_mid_points_plane(root,ax,orbitale_entry_1,orbitale_entry_2,portion_entry_1,portion_entry_2)
+
+        except ValueError:
+            print("Invalid input for point or plane")     
+    label = tk.Label(root, text="좌/우 orbitale 두 점과 좌/우 portion 두 점을 입력하세요")
+    label.pack(side=tk.TOP,pady=5)
+    
+    label_orbitale = tk.Label(root, text="좌/우orbitale의 각각 점을 입력하세요(x,y,z)")
+    label_orbitale.pack(side=tk.TOP, pady=5)
+    orbitale_entry_1 = entry_label(root, "x1,y1,z1")
+    orbitale_entry_2 = entry_label(root, "x2,y2,z2")
+
+    label_portion = tk.Label(root, text="portion 두 점을 각각 입력하세요")
+    label_portion.pack(side=tk.TOP,pady=5)
+    portion_entry_1 = entry_label(root, "x1,y1,z1")
+    portion_entry_2 = entry_label(root, "x2,y2,z2")
