@@ -1,5 +1,5 @@
 import tkinter as tk
-from button import add_point,add_plane,add_plane_and_line,two_point,point_and_plane,points_and_mid_points_plane
+from button import add_point,add_plane,add_plane_and_line,two_point,point_and_plane,points_and_mid_points_plane,two_point_one_plane_solve,solve_one_point_two_plane,solve_two_lines_angle
 from text_label import entry_label
 from math_method.plane import two_plane_angle
 def three_point_make_plane(root,ax,canvas):
@@ -50,8 +50,8 @@ def plane_and_line_angle(root,ax,canvas):
         try:
             plane = plane_entry.get().split(",")
             line_point1 = line_point1_entry.get().split(",")
-            line_point2 = line_point2_entry.get().split(",")
-            angle = add_plane_and_line(root,ax,plane,line_point1,line_point2)
+            line_dir_vec = line_dir_vec_entry.get().split(",")
+            angle = add_plane_and_line(root,ax,plane,line_point1,line_dir_vec)
             angle.pack(side=tk.BOTTOM, pady=5)
             canvas.draw()
         except ValueError:
@@ -61,10 +61,10 @@ def plane_and_line_angle(root,ax,canvas):
     label1 = tk.Label(root, text="평면을 먼저 입력하세요(ax+by+cz=0)")
     label1.pack(side=tk.TOP,pady=5)
     plane_entry = entry_label(root, "a,b,c")
-    label2 = tk.Label(root, text='직선이 지나가는 두 점을 입력해주세요(x,y,z)')
+    label2 = tk.Label(root, text='직선이 지나가는 한 점(x,y,z)과 방향벡터(a,b,c)를 입력하세요')
     label2.pack(side=tk.TOP,pady=5)
     line_point1_entry = entry_label(root, "x,y,z")
-    line_point2_entry = entry_label(root, "x,y,z")
+    line_dir_vec_entry = entry_label(root, "a,b,c")
 
     button_add_plane = tk.Button(root, text="Calculate angle and add figure!", command=plane_and_line)
     button_add_plane.pack(pady=10)
@@ -115,13 +115,14 @@ def point_and_plane_distance(root, ax, canvas):
 def point_and_mid_point_plane(root,ax,canvas):
     def point_mid_point_plane(ax=ax, canvas=canvas):
         try:
-            orbitale_entry_1 = orbitale_entry_1.get().split(",")
-            orbitale_entry_2 = orbitale_entry_2.get().split(",")
-            portion_entry_1 = portion_entry_1.get().split(",")
-            portion_entry_2 = portion_entry_2.get().split(",")
-            #그리기만 학 ㅣ때문에 따로 return 하는 값 없음
-            points_and_mid_points_plane(root,ax,orbitale_entry_1,orbitale_entry_2,portion_entry_1,portion_entry_2)
-
+            orbitale_1 = orbitale_entry_1.get().split(",")
+            orbitale__2 = orbitale_entry_2.get().split(",")
+            porion_1 = portion_entry_1.get().split(",")
+            porion_2 = portion_entry_2.get().split(",")
+            
+            label = points_and_mid_points_plane(root,ax,orbitale_1,orbitale__2,porion_1,porion_2)
+            label.pack(side=tk.TOP, pady=5)
+            canvas.draw()
         except ValueError:
             print("Invalid input for point or plane")     
     label = tk.Label(root, text="좌/우 orbitale 두 점과 좌/우 portion 두 점을 입력하세요")
@@ -136,3 +137,78 @@ def point_and_mid_point_plane(root,ax,canvas):
     label_portion.pack(side=tk.TOP,pady=5)
     portion_entry_1 = entry_label(root, "x1,y1,z1")
     portion_entry_2 = entry_label(root, "x2,y2,z2")
+
+    button_add_plane = tk.Button(root, text="Calculate distance and add figure!", command=point_mid_point_plane)
+    button_add_plane.pack(pady=10)
+
+def two_points_one_plane(root,ax,canvas):
+    def slove_two_point_one_plane(ax=ax,canvas=canvas):
+        point1 = point1_entry.get().split(",")
+        point2 = point2_entry.get().split(",")
+        plane = plane_entry.get().split(",")
+
+        label = two_point_one_plane_solve(root,ax,point1,point2,plane)
+        label.pack(side=tk.TOP,pady=5)
+        canvas.draw()
+    label = tk.Label(root, text="두 점을 지나며, 한 평면에 수직인 평면을 구해보겠습니다. 두 점을 먼저 입력해주세요")
+    label.pack(side=tk.TOP, pady=5)
+
+    point1_entry = entry_label(root,"x,y,z")
+    point2_entry = entry_label(root,"x,y,z")
+
+    plane_label = tk.Label(root, text="수직이 될 한 평면을 입력하세요(ax+by+cz=d)")
+    plane_label.pack(side=tk.TOP, pady=5)
+    plane_entry = entry_label(root, "a,b,c,d")
+    button_add_plane = tk.Button(root, text="Calculate distance and add figure!", command=slove_two_point_one_plane)
+    button_add_plane.pack(pady=10)
+
+def one_point_two_planes(root,ax,canvas):
+    def one_point_two_plane(ax=ax, canvas=canvas):
+        point = point_entry.get().split(",")
+        plane1 = plane1_entry.get().split(",")
+        plane2 = plane2_entry.get().split(",")
+
+        label = solve_one_point_two_plane(root,ax,point,plane1,plane2)
+        label.pack(side=tk.TOP,pady=5)
+        canvas.draw()
+
+    label = tk.Label(root, text='한 점을 지나면서, 두 평면과 수직인 평면을 구해보겠습니다. 한 점을 먼저 입력하세요.')
+    label.pack(side=tk.TOP, pady=5)
+
+    point_entry = entry_label(root,"x,y,z")
+    point_entry.pack(side=tk.TOP, pady=5)
+
+    plane_label = tk.Label(root, text="평면을 입력해주세요(ax+by+cz=d)")
+    plane_label.pack(side=tk.TOP,pady=5)
+    plane1_entry = entry_label(root,"a,b,c,d")
+    plane2_entry = entry_label(root,"a,b,c,d")
+    plane1_entry.pack(side=tk.TOP,pady=5)
+    plane2_entry.pack(side=tk.TOP,pady=5)
+
+    button_add_plane = tk.Button(root, text="Calculate distance and add figure!", command=one_point_two_plane)
+    button_add_plane.pack(pady=10)
+
+def line_and_line_angle(root,ax,canvas):
+    def line_and_line_angles(ax=ax, canvas=canvas):
+        line1_point = line1_point_entry.get().split(",")
+        line1_dir_vec = line1_dir_vec_entry.get().split(",")
+        line2_point = line2_point_entry.get().split(",")
+        line2_dir_vec = line2_dir_vec_entry.get().split(",")
+        label = solve_two_lines_angle(root,ax,line1_point, line1_dir_vec, line2_point, line2_dir_vec)
+        label.pack(side=tk.TOP,pady=5)
+        canvas.draw()        
+    label = tk.Label(root, text="두 직선의 각도를 구해보겠습니다. 각 직선이 출발할 점과, 방향벡터를 입력하세요")
+    label.pack(side=tk.TOP, pady=5)
+    line1_point_entry = entry_label(root,"x,y,z")
+    line1_dir_vec_entry = entry_label(root,"a,b,c")
+
+    line2_point_entry = entry_label(root,"x,y,z")
+    line2_dir_vec_entry = entry_label(root,"a,b,c")
+
+    line1_point_entry.pack(side=tk.TOP, pady=5)
+    line2_point_entry.pack(side=tk.TOP, pady=5)
+    line1_dir_vec_entry.pack(side=tk.TOP, pady=5)
+    line2_dir_vec_entry.pack(side=tk.TOP, pady=5)
+
+    button_add_plane = tk.Button(root, text="Calculate distance and add figure!", command=line_and_line_angles)
+    button_add_plane.pack(pady=10)
