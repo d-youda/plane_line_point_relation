@@ -60,7 +60,7 @@ class SP_Plane():
         A,B,C,D = self.plane()
         plane = np.array([A,B,C,D])
         label = draw_plane(root=self.root,ax=self.ax,plane=plane,
-                           label=f'{self.label}', color=self.color)
+                           label=f'{self.label}', color=self.color,vertical=True)
         label.pack()
         self.canvas.draw()
 
