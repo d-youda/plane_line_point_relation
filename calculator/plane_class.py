@@ -1,9 +1,3 @@
-import tkinter as tk
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from mpl_toolkits.mplot3d import Axes3D
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d.art3d import Poly3DCollection
-from cube import plot_cube
 from math_method.point import middle_two_point
 from math_method.plane import three_point_plane, two_point_one_plane,one_parallel_plane_and_point,two_plane_one_point
 from button import draw_plane,draw_point

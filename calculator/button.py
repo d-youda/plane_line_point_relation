@@ -25,11 +25,12 @@ def create_button_frame(root):
 def draw_plane(root,ax,plane,label=None,color='blue',vertical=False):
     '''평면 그리는 함수'''
     if vertical:
-        x, y = np.meshgrid(range(-100, 100), range(-100, 100)) #10x10 array 두 개
+        x, y = np.meshgrid(range(-50, 100), range(-50, 100)) #10x10 array 두 개
     else:
         x, y = np.meshgrid(range(-200, 200), range(-200, 200)) #10x10 array 두 개
     a,b,c,d = plane
     z = (d-a*x - b*y)/c
+    
     ax.plot_surface(x,y,z,label=f'{label}',color=color,alpha=0.5)
     legend_elements = [Line2D([0], [0], color=color, lw=2, label=f'{label}')]
     legend = ax.legend(handles=legend_elements, loc='upper right')

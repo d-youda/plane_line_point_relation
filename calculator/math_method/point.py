@@ -8,7 +8,7 @@ def two_point_distance(point1, point2):
 def point_and_plane_distance(point,plane):
     a,b,c,d = plane
     x,y,z = point
-    distance = abs(a * x + b* y + c * z + d) / np.sqrt(a**2 + b**2 + c**2)
+    distance = np.abs(a * x + b* y + c * z + d) / np.sqrt(a**2 + b**2 + c**2)
     return distance
 
 def three_point_angle_solve(point1, point2, point3):

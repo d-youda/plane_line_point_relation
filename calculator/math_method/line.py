@@ -5,7 +5,7 @@ def slove_line_and_plane_angle(plane,line_point1,line_point2):
     #plane : ax+by+cz=d | line : 두 점을 지나는 직선
 
     #1. 평면의 법선벡터 구하기
-    plane_n_vec = np.array(plane[:3])
+    plane_n_vec = plane[:3]
     #2. 두 점이 만드는 직선의 방향벡터 구하기
     line_dir_vec = line_point2-line_point1 
     
@@ -15,8 +15,12 @@ def slove_line_and_plane_angle(plane,line_point1,line_point2):
     norm1 = np.linalg.norm(line_dir_vec)
     norm2 = np.linalg.norm(plane_n_vec)    
     cos_theta = dot_product/(norm1*norm2)
+    #5. theta값 구하기
     radian = np.arccos(cos_theta)
+    #6. radian을 각도로 변경
     degree = np.degrees(radian)
+    if degree > 90:
+        degree -= 90
     return degree
 
 def solve_two_line_angle(dir_vector1, dir_vector2):
