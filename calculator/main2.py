@@ -13,7 +13,7 @@ plane = 0
 angle = 0
 distance = 0
 #---------------input 점들 값 받기---------------
-file = 'C:\\Users\\fasol\\Desktop\\youda\\2.치의학\\data\\1006.txt' #파일
+file = '.\\1001.txt' #파일
 def file_extract_point(line):
     points = line.split("(")[1]
     points = points.split(",")

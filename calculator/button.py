@@ -13,8 +13,8 @@ def draw_plane(root,ax,plane,label=None,color='blue',vertical=False):
     #     x, y = np.meshgrid(range(0, 120), range(0, 120)) #10x10 array 두 개
     a,b,c,d = plane
     z = (d-a*x - b*y)/c
-    z1 = np.where(z<-(max+100),None,z)
-    z2 = np.where(z>(max+100),None,z1)
+    z1 = np.where(z<-(max+150),None,z)
+    z2 = np.where(z>(max+150),None,z1)
     
     ax.plot_surface(x,y,z2,label=f'{label}',color=color,alpha=0.7)
     legend_elements = [Line2D([0], [i], color=color, lw=2, label=f'{label}')]
