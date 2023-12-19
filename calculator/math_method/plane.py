@@ -54,7 +54,7 @@ def two_plane_one_point(point,plane1,plane2):
 
     #2.두 벡터와 동시에 수직인 벡터 = 구하고자 하는 평면의 법선벡터
     n_vector = np.cross(v1,v2)
-    n_vector //=slove_GCD(n_vector)
+    n_vector =slove_GCD(n_vector)
 
     #3. 평의 방정식의 계수이자 평면의 법선벡터
     a,b,c = n_vector

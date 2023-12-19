@@ -167,8 +167,8 @@ angle_ckbutton = tk.Checkbutton(root, text="각도 구하기",command=angle_ck_e
 angle_ckbutton.pack()
 distance_ckbutton = tk.Checkbutton(root, text="거리 구하기",command=distnace_ck_event)
 distance_ckbutton.pack()
-delete_button = tk.Button(root, text="plot 초기화 버튼",command=delete)
-delete_button.pack(side=tk.BOTTOM)
+delete_button = tk.Button(root, text="plot reset",command=delete,height=5,width=10,bg='red',fg='white')
+delete_button.pack(side=tk.BOTTOM,pady=10)
 #---------------평면 구하기---------------
 plane_value = tk.IntVar()
 solve_FH_Plane = two_point_middle_point_plane(canvas=canvas, ax=ax, root=root,
@@ -186,7 +186,7 @@ OP_Plane_button.pack_forget()
 
 solve_SP_plane = SP_Plane(canvas=canvas,ax=ax,root=root,
                           n_point=N_point, s_point=S_point,FH_plane=FH_plane,
-                          label='SP plane', color='blue')
+                          label='SP plane', color='thistle')
 sp_plane = solve_SP_plane.plane()
 SP_plane_button = tk.Radiobutton(root, text='SP 평면 구하기',value=3,command=sp_plane_event,variable=plane_value)
 SP_plane_button.pack_forget()
@@ -199,7 +199,7 @@ XZ_plane_button.pack_forget()
 
 solve_xy_plane = XY_plane(canvas=canvas, ax=ax, root=root,
                           FH_plane=FH_plane, SP_plane=sp_plane,n_point=N_point,
-                          label='xy plane', color='orange')
+                          label='xy plane', color='lightcyan')
 XY_plane_button = tk.Radiobutton(root, text='XY 평면 구하기',value=5,command=xy_plane_event,variable=plane_value)
 XY_plane_button.pack_forget()
 
@@ -263,4 +263,7 @@ pog_z = Point_and_Plane_distance(root=root,canvas=canvas,ax=ax,
                                point=POG,plane=solve_xy_plane.plane(),label='Pog-Z')
 point_and_plane_distance3 = tk.Radiobutton(root,text="Pog-Z", value=11, command=pog_z_event,variable=angle_value)
 point_and_plane_distance3.pack_forget()
+
+#맨 위 평면의 방정식
+A = np.array([500,500,500])
 root.mainloop()

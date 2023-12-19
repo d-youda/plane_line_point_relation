@@ -4,7 +4,7 @@ from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 
-value = 200
+value = 500
 def plot_cube(ax):
     vertices = [
         [-value, -value, -value], [value, -value, -value], [value, value, -value], [-value, value, -value],

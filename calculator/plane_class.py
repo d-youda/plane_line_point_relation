@@ -28,6 +28,9 @@ class two_point_middle_point_plane():
         draw_point(self.ax,point=self.point1)
         draw_point(self.ax,point=self.point2)
         draw_point(self.ax,point=self.middle_point)
+        Z_PLANE(self.ax,self.root)
+        X_PLANE(self.ax,self.root)
+
         A,B,C,D = self.plane()
         plane = np.array([A,B,C,D])
         label = draw_plane(root=self.root,ax=self.ax,plane=plane,
@@ -106,6 +109,28 @@ class XY_plane():
         A,B,C,D = self.plane()
         plane = np.array([A,B,C,D])
         label = draw_plane(root=self.root,ax=self.ax,plane=plane,
-                           label=f'{self.label}', color=self.color)
+                           label=f'{self.label}', color=self.color,vertical=True)
         label.pack()
         self.canvas.draw()
+
+def Z_PLANE(ax,root):
+    point1 = np.array([1,3,500])
+    point2 = np.array([200,3,500])
+    point3 = np.array([1,300,500])
+    draw_point(ax, point=point1)
+    draw_point(ax, point=point2)
+    draw_point(ax, point=point3)
+
+    plane = three_point_plane(point1,point2,point3)
+    draw_plane(root,ax,plane,label="Z_plane", color='black')
+
+def X_PLANE(ax,root):
+    point1 = np.array([400,200,-500])
+    point2 = np.array([250,100,-500])
+    point3 = np.array([-400,300,-500])
+    draw_point(ax, point=point1)
+    draw_point(ax, point=point2)
+    draw_point(ax, point=point3)
+
+    plane = three_point_plane(point1,point2,point3)
+    draw_plane(root,ax,plane,label="Z_plane", color='black')
