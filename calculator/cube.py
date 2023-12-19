@@ -22,7 +22,7 @@ def plot_cube(ax):
     ]
 
     #정육면체 화면에 뿌리기
-    ax.add_collection3d(Poly3DCollection(faces, facecolors='gray', linewidths=1, edgecolors='black', alpha=0.3))
+    ax.add_collection3d(Poly3DCollection(faces, facecolors='lightgray', linewidths=1, edgecolors='black', alpha=0.2))
 
     # Set axis labels
     ax.set_xlabel('X')

@@ -1,5 +1,5 @@
 import numpy as np
-
+import math
 def two_point_distance(point1, point2):
     #두 점의 거리 = 두 점을 이은 벡터의 크기와 같다.
     distance = np.linalg.norm(np.array(point2) - np.array(point1))
@@ -8,7 +8,7 @@ def two_point_distance(point1, point2):
 def point_and_plane_distance(point,plane):
     a,b,c,d = plane
     x,y,z = point
-    distance = np.abs(a * x + b* y + c * z + d) / np.sqrt(a**2 + b**2 + c**2)
+    distance = np.abs(a * x + b* y + c * z - d) /  np.sqrt(a*a + b*b + c*c)
     return distance
 
 def three_point_angle_solve(point1, point2, point3):

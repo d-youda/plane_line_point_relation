@@ -1,4 +1,3 @@
-import tkinter as Tk
 import tkinter as tk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from mpl_toolkits.mplot3d import Axes3D
@@ -14,11 +13,11 @@ plane = 0
 angle = 0
 distance = 0
 #---------------input 점들 값 받기---------------
-file = 'C:\\Users\\fasol\\Desktop\\youda\\2.치의학\\data\\1001.txt'
+file = 'C:\\Users\\fasol\\Desktop\\youda\\2.치의학\\data\\1006.txt' #파일
 def file_extract_point(line):
     points = line.split("(")[1]
     points = points.split(",")
-    result = [float(point) for point in points]
+    result = [int(float(point)) for point in points]
     return result
 with open(file,"r") as f:
     while True:
@@ -181,12 +180,13 @@ FH_Plane_button.pack_forget()
 OP_plane = two_point_middle_point_plane(canvas=canvas,ax=ax,root=root,
                                         point1=U6L,point2=U6R,middle_point1=U1R,middle_point2=U1L,
                                         label='OP plane',color='green')
+op_plane = OP_plane.plane()
 OP_Plane_button = tk.Radiobutton(root, text='OP 평면 구하기',value=2,command=op_plane_event,variable=plane_value)
 OP_Plane_button.pack_forget()
 
 solve_SP_plane = SP_Plane(canvas=canvas,ax=ax,root=root,
                           n_point=N_point, s_point=S_point,FH_plane=FH_plane,
-                          label='SP plane', color='thistle')
+                          label='SP plane', color='skyblue')
 sp_plane = solve_SP_plane.plane()
 SP_plane_button = tk.Radiobutton(root, text='SP 평면 구하기',value=3,command=sp_plane_event,variable=plane_value)
 SP_plane_button.pack_forget()
@@ -194,12 +194,13 @@ SP_plane_button.pack_forget()
 solve_XZ_plane = XZ_plane(canvas=canvas, ax=ax,root=root,
                           FH_plane=FH_plane,n_point=N_point,
                           label='XZ plane', color='violet')
-XZ_plane_button = tk.Radiobutton(root, text='XZ 평면 구하기',value=4,command=XZ_plane_event,variable=plane_value)
+XZ_plane_button = tk.Radiobutton (root, text='XZ 평면 구하기',value=4,command=XZ_plane_event,variable=plane_value)
 XZ_plane_button.pack_forget()
 
 solve_xy_plane = XY_plane(canvas=canvas, ax=ax, root=root,
                           FH_plane=FH_plane, SP_plane=sp_plane,n_point=N_point,
-                          label='xy plane', color='lightcyan')
+                          label='xy plane', color='yellowgreen')
+coronal_plane = solve_xy_plane.plane()
 XY_plane_button = tk.Radiobutton(root, text='XY 평면 구하기',value=5,command=xy_plane_event,variable=plane_value)
 XY_plane_button.pack_forget()
 
@@ -234,33 +235,33 @@ point_and_plane_angle1.pack_forget()
 # point_and_plane_angle2.pack()
 
 op_fh_angle = Two_Plane_Angle(canvas=canvas, ax=ax, root=root,
-                              plane1=OP_plane.plane(),plane2=FH_plane,label='OP-FH')
+                              plane1=op_plane,plane2=FH_plane,label='OP-FH')
 plane_and_plane_angle = tk.Radiobutton(root,text="OP-FH", value=6, command=op_fh_angle_event,variable=angle_value)
 plane_and_plane_angle.pack_forget()
 
 #---------------거리 구하기---------------
 overjet = Two_point_distance(root=root, canvas=canvas,ax=ax,
-                             point1=U1R,point2=L1R,label="U1-L1")
+                             point1=U1R,point2=L1R,label="overjet")
 point_distance1 = tk.Radiobutton(root,text="Overjet", value=7, command=overjet_event,variable=angle_value)
 point_distance1.pack_forget()
 
 overbite = Two_point_distance(root=root, canvas=canvas,ax=ax,
-                             point1=U1R,point2=L1R,label="U1-L1")
+                             point1=U1R,point2=L1R,label="overbite")
 point_distance2 = tk.Radiobutton(root,text="Overbite", value=8, command=overbite_event,variable=angle_value)
 point_distance2.pack_forget()
 
 u1z = Point_and_Plane_distance(root=root,canvas=canvas,ax=ax,
-                               point=U1R,plane=solve_xy_plane.plane(),label='U1-Z')
+                               point=U1R,plane=coronal_plane,label='U1-Z')
 point_and_plane_distance1 = tk.Radiobutton(root,text="U1-Z", value=9, command=u1z_event,variable=angle_value)
 point_and_plane_distance1.pack_forget()
 
 a_z = Point_and_Plane_distance(root=root,canvas=canvas,ax=ax,
-                               point=A_point,plane=solve_xy_plane.plane(),label='A-Z')
+                               point=A_point,plane=coronal_plane,label='A-Z')
 point_and_plane_distance2 = tk.Radiobutton(root,text="A-Z", value=10, command=a_z_event,variable=angle_value)
 point_and_plane_distance2.pack_forget()
 
 pog_z = Point_and_Plane_distance(root=root,canvas=canvas,ax=ax,
-                               point=POG,plane=solve_xy_plane.plane(),label='Pog-Z')
+                               point=POG,plane=coronal_plane,label='Pog-Z')
 point_and_plane_distance3 = tk.Radiobutton(root,text="Pog-Z", value=11, command=pog_z_event,variable=angle_value)
 point_and_plane_distance3.pack_forget()
 

@@ -9,7 +9,6 @@ def three_point_plane(point1, point2, point3):
 
     #2. 법선벡터는 v1과 v2 동시에 수직이기 때문에 n_vec = v1 x v2
     normal_vector = np.cross(v1, v2) #v1, v2 벡터곱
-    normal_vector =slove_GCD(normal_vector) #법선벡터 최대한 작게 만들기
     
     #3. 법선벡터는 해당 평면의 방정식의 계수들을 의미한다
     A, B, C = normal_vector
@@ -21,16 +20,9 @@ def three_point_plane(point1, point2, point3):
 
 def two_plane_angle(plane1, plane2):
     '''두 평면이 이루는 각 구하기'''
-    n_vec1 = plane1[:3]
-    n_vec2 = plane2[:3]
-    dot_product = np.dot(n_vec1,n_vec1)
-
-    #두 벡터 크기
-    n_vec1_mag = np.linalg.norm(n_vec1)
-    n_vec2_mag = np.linalg.norm(n_vec2)
-
-    #라디안 각도 계산
-    cosine_theta = dot_product/(n_vec1_mag*n_vec2_mag)
+    a,b,c,d = plane1
+    a1,b1,c1,d1 = plane2
+    cosine_theta = (np.abs(a*a1+b*b1+c*c1))/((np.sqrt(a*a+b*b+c*c))*(np.sqrt(a1*a1+b1*b1+c1*c1)))
     theta = np.arccos(cosine_theta)
     degree = np.degrees(theta)
     return degree
@@ -49,12 +41,11 @@ def two_point_one_plane(point1,point2,plane):
 def two_plane_one_point(point,plane1,plane2):
     '''두 평면과 수직이면서, 한 점을 지나는 평면의 방정식 구하기'''
     #1. 주어진 평면에서 상수d를 제외하면 법선벡터를 나타냄
-    v1 = plane1[:3]
-    v2 = plane2[:3]
+    direction_vector1 = plane1[:3]
+    direction_vector2 = plane2[:3]
 
     #2.두 벡터와 동시에 수직인 벡터 = 구하고자 하는 평면의 법선벡터
-    n_vector = np.cross(v1,v2)
-    n_vector =slove_GCD(n_vector)
+    n_vector = np.cross(direction_vector1,direction_vector2)
 
     #3. 평의 방정식의 계수이자 평면의 법선벡터
     a,b,c = n_vector
@@ -73,23 +64,4 @@ def one_parallel_plane_and_point(plane,point):
     d = a*point[0] +b*point[1]+c*point[2]
     answer_plane = a,b,c,d
     return answer_plane
-
-def slove_GCD(vector):
-    '''
-    법선벡터는 방향벡터를 의미하기 때문에 크기가 중요하지 않다.
-    따라서 법선벡터를 최대한 간단한 식으로 나타내기 위해 최대공약수를 구해
-    약분을 진행한다.
-    '''
-    x,y,z = vector
-    x = int(x)
-    y = int(y)
-    z = int(z)
-    x_y = gcd(x,y)
-    solve_gcd = gcd(x_y,z)
-    
-    x //= solve_gcd
-    y//=solve_gcd
-    z//=solve_gcd
-    gcd_vector = np.array([x,y,z])
-    return gcd_vector
 

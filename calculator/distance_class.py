@@ -35,8 +35,8 @@ class Point_and_Plane_distance():
         return distances
     
     def draw_event(self):
-        draw_point(ax=self.ax, point=self.point)
-        draw_plane(root=self.root, ax=self.ax, plane=self.plane)
         distance_label = tk.Label(self.root, text=f"{self.label} 거리: {self.distance()}")
         distance_label.pack()
+        draw_point(ax=self.ax, point=self.point)
+        draw_plane(root=self.root, ax=self.ax, plane=self.plane,label='Coronal')
         self.canvas.draw()
