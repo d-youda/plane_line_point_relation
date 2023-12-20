@@ -8,16 +8,21 @@ from plane_class import two_point_middle_point_plane,SP_Plane,XZ_plane,XY_plane
 from angle_class import Three_point_angle,Point_and_plane_angle,Two_Plane_Angle
 from distance_class import Two_point_distance,Point_and_Plane_distance
 import numpy as np
+
 #-----체크 박스 선택 or 해제 알기 위한 global 변수-------
 plane = 0
 angle = 0
 distance = 0
 #---------------input 점들 값 받기---------------
-file = '.\\1001.txt' #파일
+file = '.\\1003.txt' #파일 경로
+def float2intarray(list):
+    result = [int(float(point)) for point in list]
+    return np.array(result)
+
 def file_extract_point(line):
     points = line.split("(")[1]
     points = points.split(",")
-    result = [int(float(point)) for point in points]
+    result = float2intarray(points)
     return result
 with open(file,"r") as f:
     while True:
@@ -60,6 +65,57 @@ with open(file,"r") as f:
             B_point = np.array(file_extract_point(line))
         elif point_name=='Pog':
             POG = np.array(file_extract_point(line))
+#점 직접 입력받기
+# N_point = np.array([110.21, 38.49, 140.01])
+# N_point = float2intarray(N_point)
+            
+# S_point = np.array([110.83, 102.22, 125.53])
+# S_point = float2intarray(S_point)
+            
+# OrR = np.array([80.18, 43.88, 110.84])
+# OrR = float2intarray(OrR)
+            
+# OrL =  np.array([143.26, 42.59, 116.96])
+# OrL = float2intarray(OrL)
+            
+# PoR = np.array([52.76, 126.27, 100.49])
+# PoR = float2intarray(PoR)
+            
+# PoL = np.array([175.38, 121.21, 113.86])
+# PoL = float2intarray(PoL)
+            
+# U1R = np.array([109.51, 21.69, 58.92])
+# U1R = float2intarray(U1R)
+            
+# U1L = np.array([119.53, 22.09, 58.66])
+# U1L = float2intarray(U1L)
+            
+# U1RA = np.array([110.59, 34.82, 79.23])
+# U1RA = float2intarray(U1RA)
+            
+# U1LA = np.array([117.85, 34.17, 79.59])
+# U1LA = float2intarray(U1LA)
+            
+# U6R = np.array([86.22, 51.1, 60.31])
+# U6R = float2intarray(U6R)
+            
+# U6L = np.array([141.24, 54.31, 63.73])
+# U6L = float2intarray(U6L)
+            
+# L1R = np.array([106.31, 21.26, 58.86])
+# L1R = float2intarray(L1R)
+            
+# L1AR = np.array([104.83, 29.26, 39.19])
+# L1AR = float2intarray(L1AR)
+            
+# A_point = np.array([113.57, 31.2, 81.36])
+# A_point = float2intarray(A_point)
+            
+# B_point = np.array([107.68, 25.39, 37.77])
+# B_point = float2intarray(B_point)
+            
+# POG = np.array([107.23, 23.73, 24.2])
+# POG = float2intarray(POG)
 
 root = tk.Tk() #tk 객체 생성
 #---------------checkbutton의 event함수들 정의---------------
@@ -265,6 +321,4 @@ pog_z = Point_and_Plane_distance(root=root,canvas=canvas,ax=ax,
 point_and_plane_distance3 = tk.Radiobutton(root,text="Pog-Z", value=11, command=pog_z_event,variable=angle_value)
 point_and_plane_distance3.pack_forget()
 
-#맨 위 평면의 방정식
-A = np.array([500,500,500])
 root.mainloop()

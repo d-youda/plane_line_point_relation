@@ -4,7 +4,20 @@ def two_point_distance(point1, point2):
     #두 점의 거리 = 두 점을 이은 벡터의 크기와 같다.
     distance = np.linalg.norm(np.array(point2) - np.array(point1))
     return distance
-    
+def overjet(point1,point2):
+    #overjet은 두 점의 y축에서의 거리와 같다.
+    y1 = point1[1]
+    y2 = point2[1]
+    distance = np.abs(y2-y1)
+    return distance
+
+def overbite(point1,point2):
+    #overbite는 두 점의 z축에서의 거리와 같다.
+    z1 = point1[2]
+    z2 = point2[2]
+    distance = np.abs(z2-z1)
+    return distance
+
 def point_and_plane_distance(point,plane):
     a,b,c,d = plane
     x,y,z = point

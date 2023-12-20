@@ -4,7 +4,7 @@ from matplotlib.lines import Line2D
 from math_method.plane import three_point_plane
 from sympy import symbols, solve,Symbol
 i = 0
-def draw_plane(root,ax,plane,label=None,color='blue',vertical=False):
+def draw_plane(root,ax,plane,label=None,color='blue'):
     max = 500
     global i
     '''평면 그리는 함수'''

@@ -2,7 +2,6 @@ from math_method.point import middle_two_point
 from math_method.plane import three_point_plane, two_point_one_plane,one_parallel_plane_and_point,two_plane_one_point
 from button import draw_plane,draw_point
 import numpy as np
-import tkinter as tk
 class two_point_middle_point_plane():
     '''
     두 점의 중간 점과, 다른 두 점을 지나는 평면 구하는 클래스
@@ -60,7 +59,7 @@ class SP_Plane():
         A,B,C,D = self.plane()
         plane = np.array([A,B,C,D])
         label = draw_plane(root=self.root,ax=self.ax,plane=plane,
-                           label=f'{self.label}', color=self.color,vertical=True)
+                           label=f'{self.label}', color=self.color)
         label.pack()
         self.canvas.draw()
 
@@ -106,6 +105,6 @@ class XY_plane():
         A,B,C,D = self.plane()
         plane = np.array([A,B,C,D])
         label = draw_plane(root=self.root,ax=self.ax,plane=plane,
-                           label=f'{self.label}', color=self.color,vertical=True)
+                           label=f'{self.label}', color=self.color)
         label.pack()
         self.canvas.draw()

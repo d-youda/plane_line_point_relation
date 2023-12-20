@@ -1,4 +1,4 @@
-from math_method.point import two_point_distance,point_and_plane_distance
+from math_method.point import overjet,overbite,point_and_plane_distance
 from button import draw_point,draw_plane
 import tkinter as tk
 class Two_point_distance():
@@ -11,7 +11,10 @@ class Two_point_distance():
         self.label = label
 
     def distance(self):
-        distances = two_point_distance(point1=self.point1,point2=self.point2)
+        if self.label=='overbite':
+            distances = overbite(point1=self.point1, point2=self.point2)
+        elif self.label=='overjet':
+            distances = overjet(point1=self.point1, point2=self.point2)
         return distances
     
     def draw_event(self):
