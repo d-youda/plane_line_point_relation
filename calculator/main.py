@@ -1,375 +1,398 @@
 import tkinter as tk
 from tkinter import filedialog
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 from cube import plot_cube
-from plane_class import two_point_middle_point_plane,SP_Plane,XZ_plane,XY_plane
+from plane_class import two_point_middle_point_plane,SP_Plane,XZ_Plane,XY_Plane
 from angle_class import Three_point_angle,Point_and_plane_angle,Two_Plane_Angle
 from distance_class import Two_point_distance,Point_and_Plane_distance
 import numpy as np
 import tkinter.messagebox as msgbox
+from input_text import input_file
+from button import draw_plane,draw_point,draw_line
+from math_method.point import middle_two_point
+
 #-----체크 박스 선택 or 해제 알기 위한 global 변수-------
 plane = 0
 angle = 0
 distance = 0
-fh_plane = 0
-op_plane = 0
-sp_plane = 0
-coronal_plane = 0
 
-N_point = np.array([0,0,0])
-S_point = np.array([0,0,0])
-OrR = np.array([0,0,0])
-OrL = np.array([0,0,0])
-PoR = np.array([0,0,0])
-PoL=np.array([0,0,0])
-U1R=np.array([0,0,0])
-U1L=np.array([0,0,0])
-U1RA=np.array([0,0,0])
-U1LA=np.array([0,0,0])
-U6R=np.array([0,0,0])
-U6L=np.array([0,0,0])
-L1R=np.array([0,0,0])
-L1AR=np.array([0,0,0])
-A_point=np.array([0,0,0])
-B_point=np.array([0,0,0])
-POG = np.array([0,0,0])
-#---------------input 점들 값 받기---------------
+class App():
+    def __init__(self, root):
+        self.root = root
+        self.plane = 0
+        self.angle = 0
+        self.distance = 0
 
-# file = 'C:\\Users\\fasol\\Desktop\\youda\\2.치의학\\data\\1003.txt' #파일 경로
-def float2intarray(list):
-    result = [int(float(point)) for point in list]
-    return np.array(result)
+        self.n_point = np.array([0,0,0])
+        self.s_point = np.array([0,0,0])
+        self.OrR = np.array([0,0,0])
+        self.OrL = np.array([0,0,0])
+        self.PoR = np.array([0,0,0])
+        self.PoL = np.array([0,0,0])
+        self.u1R = np.array([0,0,0])
+        self.u1L = np.array([0,0,0])
+        self.u1RA = np.array([0,0,0])
+        self.u1LA=np.array([0,0,0])
+        self.u6R=np.array([0,0,0])
+        self.u6L=np.array([0,0,0])
+        self.L1R=np.array([0,0,0])
+        self.L1AR=np.array([0,0,0])
+        self.a_point=np.array([0,0,0])
+        self.b_point=np.array([0,0,0])
+        self.pog = np.array([0,0,0])
 
-def file_extract_point(line):
-    points = line.split("(")[1]
-    points = points.split(",")
-    result = float2intarray(points)
-    return result
-def input_file(file):
-     with open(file,"r") as f:
-        while True:
-            line = f.readline()
-            if not line: # 파일 읽기가 종료된 경우
-                break
-            line = line.replace(")\n","")#필요없는 부분 제거
-            point_name = line.strip().split(",")[0]
-            if point_name=="N":
-                N_point = np.array(file_extract_point(line))
-            elif point_name=='Sella':
-                S_point = np.array(file_extract_point(line))
-            elif point_name=="R Or":
-                OrR = np.array(file_extract_point(line))
-            elif point_name == "L Or":
-                OrL = np.array(file_extract_point(line))
-            elif point_name == "R Po":
-                PoR = np.array(file_extract_point(line))
-            elif point_name == "L Po":
-                PoL = np.array(file_extract_point(line))
-            elif point_name == "R U1CP":
-                U1R = np.array(file_extract_point(line))
-            elif point_name == "L U1CP":
-                U1L = np.array(file_extract_point(line))
-            elif point_name == "R U1RP":
-                U1RA = np.array(file_extract_point(line))
-            elif point_name == "L U1RP":
-                U1LA = np.array(file_extract_point(line))
-            elif point_name =="R U6CP":
-                U6R = np.array(file_extract_point(line))
-            elif point_name == "L U6CP":
-                U6L = np.array(file_extract_point(line))
-            elif point_name=="R L1CP":
-                L1R = np.array(file_extract_point(line))
-            elif point_name=="R L1RP":
-                L1AR = np.array(file_extract_point(line))
-            elif point_name=='A':
-                A_point = np.array(file_extract_point(line))
-            elif point_name=='B':
-                B_point = np.array(file_extract_point(line))
-            elif point_name=='Pog':
-                POG = np.array(file_extract_point(line))
-        return N_point,S_point,OrR,OrL,PoR,PoL,U1R,U1L,U1RA,U1LA,U6R,U6L,L1R,L1AR,A_point,B_point,POG
-#점 직접 입력받기
-# N_point = np.array([110.21, 38.49, 140.01])
-# N_point = float2intarray(N_point)
-            
-# S_point = np.array([110.83, 102.22, 125.53])
-# S_point = float2intarray(S_point)
-            
-# OrR = np.array([80.18, 43.88, 110.84])
-# OrR = float2intarray(OrR)
-            
-# OrL =  np.array([143.26, 42.59, 116.96])
-# OrL = float2intarray(OrL)
-            
-# PoR = np.array([52.76, 126.27, 100.49])
-# PoR = float2intarray(PoR)
-            
-# PoL = np.array([175.38, 121.21, 113.86])
-# PoL = float2intarray(PoL)
-            
-# U1R = np.array([109.51, 21.69, 58.92])
-# U1R = float2intarray(U1R)
-            
-# U1L = np.array([119.53, 22.09, 58.66])
-# U1L = float2intarray(U1L)
-            
-# U1RA = np.array([110.59, 34.82, 79.23])
-# U1RA = float2intarray(U1RA)
-            
-# U1LA = np.array([117.85, 34.17, 79.59])
-# U1LA = float2intarray(U1LA)
-            
-# U6R = np.array([86.22, 51.1, 60.31])
-# U6R = float2intarray(U6R)
-            
-# U6L = np.array([141.24, 54.31, 63.73])
-# U6L = float2intarray(U6L)
-            
-# L1R = np.array([106.31, 21.26, 58.86])
-# L1R = float2intarray(L1R)
-            
-# L1AR = np.array([104.83, 29.26, 39.19])
-# L1AR = float2intarray(L1AR)
-            
-# A_point = np.array([113.57, 31.2, 81.36])
-# A_point = float2intarray(A_point)
-            
-# B_point = np.array([107.68, 25.39, 37.77])
-# B_point = float2intarray(B_point)
-            
-# POG = np.array([107.23, 23.73, 24.2])
-# POG = float2intarray(POG)
+        self.XY_plane = np.array([0,0,0,0])
+        self.XZ_plane = np.array([0,0,0,0])
+        self.SP_plane = np.array([0,0,0,0])
+        self.FH_plane = np.array([0,0,0,0])
+        self.OP_plane = np.array([0,0,0,0])
+        self.SN_plane = np.array([0,0,0,0])
+        self.fH_label = tk.Label()
+        self.op_label = tk.Label()
+        self.sp_label = tk.Label()
+        self.xz_label=tk.Label()
+        self.xy_label =tk.Label()
+        self.SNA_label = tk.Label()
+        self.SNB_label = tk.Label()
+        self.ANB_label = tk.Label()
+        self.U1SN_label = tk.Label()
+        self.OPFH_label = tk.Label()
+        self.overjet_label = tk.Label()
+        self.overbite_label = tk.Label()
+        self.u1z_label = tk.Label()
+        self.a_z_label = tk.Label()
+        self.pogz_label = tk.Label()
 
-root = tk.Tk() #tk 객체 생성
-#---------------checkbutton의 event함수들 정의---------------
-def plane_cb_event():
-    global plane
-    if plane == 0:
-        FH_Plane_button.pack()
-        OP_Plane_button.pack()
-        SP_plane_button.pack()
-        XZ_plane_button.pack()
-        XY_plane_button.pack()
-        plane +=1 
-    elif plane == 1:
-        FH_Plane_button.pack_forget()
-        OP_Plane_button.pack_forget()
-        SP_plane_button.pack_forget()
-        XZ_plane_button.pack_forget()
-        XY_plane_button.pack_forget()
-        plane = 0
-def angle_ck_event():
-    global angle
-    if angle==0:
-        three_point_angle1.pack()
-        three_point_angle2.pack()
-        three_point_angle3.pack()
-        point_and_plane_angle1.pack()
-        plane_and_plane_angle.pack()
-        angle += 1
-    elif angle==1:
-        three_point_angle1.pack_forget()
-        three_point_angle2.pack_forget()
-        three_point_angle3.pack_forget()
-        point_and_plane_angle1.pack_forget()
-        plane_and_plane_angle.pack_forget()
-        angle = 0
-def distnace_ck_event():
-    global distance
-    if distance==0:
-        point_distance1.pack()
-        point_distance2.pack()
-        point_and_plane_distance1.pack()
-        point_and_plane_distance2.pack()
-        point_and_plane_distance3.pack()
-        distance += 1
-    elif distance==1:
-        point_distance1.pack_forget()
-        point_distance2.pack_forget()
-        point_and_plane_distance1.pack_forget()
-        point_and_plane_distance2.pack_forget()
-        point_and_plane_distance3.pack_forget()
-        distance = 0
-#----------------button event 함수들---------------
-def input_file_event():
-    file = filedialog.askopenfilename()
-    global N_point,S_point,OrR,OrL,PoR,PoL,U1R,U1L,U1RA,U1LA,U6R,U6L,L1R,L1AR,A_point,B_point,POG
-    N_point,S_point,OrR,OrL,PoR,PoL,U1R,U1L,U1RA,U1LA,U6R,U6L,L1R,L1AR,A_point,B_point,POG = input_file(file)
-    
-    msgbox.showwarning(title="경고!",message="데이터를 입력하였다면, FH plane과 sp plane을 먼저 실행해주세요.")
-def delete():
-            ax.clear()
-            plot_cube(ax)
-            canvas.draw()
-#---------------radio button의 event함수들 정의---------------
-#평면 구해서 canvas에 그리기
-def fh_plane_event():
-    global fh_plane
-    solve_FH_Plane = two_point_middle_point_plane(canvas=canvas, ax=ax, root=root,
-                                        point1=OrR,point2=OrL,middle_point1=PoR, middle_point2=PoL,
-                                        label='FH plane',color='yellow')
-    fh_plane = solve_FH_Plane.plane()
-    solve_FH_Plane.plot()
-def op_plane_event():
-    global op_plane
-    OP_plane = two_point_middle_point_plane(canvas=canvas,ax=ax,root=root,
-                                        point1=U6L,point2=U6R,middle_point1=U1R,middle_point2=U1L,
+        #캔버스 생성
+        fig = plt.Figure(figsize=(5, 5), tight_layout=True) #3d cube 그릴 캔버스 생성
+        self.ax = fig.add_subplot(111, projection='3d') #canvas 3D로 변경
+        self.canvas = FigureCanvasTkAgg(fig, master=root)
+        canvas_widget = self.canvas.get_tk_widget()
+        canvas_widget.pack(side=tk.LEFT, fill=tk.BOTH, expand=1) #캔버스 화면 좌측에 고정시키기
+        plot_cube(self.ax) #cube 그리기
+
+        #버튼 삽입
+        self.input_button = tk.Button(self.root, text="txt파일 받아오기", command=self.input_file_event)
+        self.input_label = tk.Label(root,text="파일은 오스템 데이터 기준으로 읽어냅니다")
+        self.input_label2 = tk.Label(root, text="혹시 다른 데이터를 넣고 싶다면, 오스템 data format으로 변경해주셔야 합니다.")
+        self.input_button.pack(side=tk.TOP)
+        self.input_label.pack()
+        self.input_label2.pack()
+
+        self.delete_button = tk.Button(root, text="plot reset",command=self.delete,height=5,width=10,bg='red',fg='white')
+        self.delete_button.pack(side=tk.BOTTOM,pady=10)
+
+        #checkbox 삽입
+        self.plane_ckbutton = tk.Checkbutton(root, text="평면 구하기",command=self.plane_cb_event)
+        self.plane_ckbutton.pack()
+        self.angle_ckbutton = tk.Checkbutton(root, text="각도 구하기",command=self.angle_cb_event)
+        self.angle_ckbutton.pack()
+        self.distance_ckbutton = tk.Checkbutton(root, text="거리 구하기",command=self.distnace_cb_event)
+        self.distance_ckbutton.pack()
+
+        #plane radion button(check box 선택하면 나오도록 하기 위해 forget해두기)
+        plane_value = tk.IntVar()
+        self.fh_plane_rb = tk.Radiobutton(root,text="FH 평면 구하기",value=1,command=self.fh_plane_event,variable=plane_value)
+        self.fh_plane_rb.pack_forget()
+        self.op_plane_rb = tk.Radiobutton(root, text='OP 평면 구하기',value=2,command=self.op_plane_event,variable=plane_value)
+        self.op_plane_rb.pack_forget() 
+        self.sp_plane_rb = tk.Radiobutton(root, text='SP 평면 구하기',value=3,command=self.sp_plane_event,variable=plane_value)
+        self.sp_plane_rb.pack_forget()
+        self.xz_plane_rb = tk.Radiobutton (root, text='XZ 평면 구하기',value=4,command=self.xz_plane_event,variable=plane_value)
+        self.xz_plane_rb.pack_forget()
+        self.xy_plane_rb = tk.Radiobutton(root, text='XY 평면 구하기',value=5,command=self.xy_plane_event,variable=plane_value)
+        self.xy_plane_rb.pack_forget()
+
+        #angle radio button(check box 선택하면 나오도록 하기 위해 forget해두기)
+        angle_value = tk.IntVar()
+        self.sna_rb = tk.Radiobutton(root,text="SNA", value=1, command=self.sna_event,variable=angle_value)
+        self.sna_rb.pack_forget()
+        self.snb_rb = tk.Radiobutton(root,text="SNB", value=2, command=self.snb_event,variable=angle_value)
+        self.snb_rb.pack_forget()
+        self.anb_rb = tk.Radiobutton(root,text="ANB", value=3, command=self.anb_event,variable=angle_value)
+        self.anb_rb.pack_forget()
+        self.u1sn_rb = tk.Radiobutton(root,text="U1-SN", value=4, command=self.u1_sn_event,variable=angle_value)
+        self.u1sn_rb.pack_forget()
+        self.opfh_rb = tk.Radiobutton(root,text="OP-FH", value=5, command=self.op_fh_angle_event,variable=angle_value)
+        self.opfh_rb.pack_forget()
+        
+        #distance radio button(check box 선택하면 나오도록 하기 위해 forget해두기)
+        distance_value = tk.IntVar()
+        self.overjet_rb = tk.Radiobutton(root,text="Overjet", value=1, command=self.overjet_event,variable=distance_value)
+        self.overjet_rb.pack_forget()
+        self.overbite_rb = tk.Radiobutton(root,text="Overbite", value=2, command=self.overbite_event,variable=distance_value)
+        self.overbite_rb.pack_forget()
+        self.u1z_rb = tk.Radiobutton(root,text="U1-Z", value=3, command=self.u1z_event,variable=distance_value)
+        self.u1z_rb.pack_forget()
+        self.az_rb = tk.Radiobutton(root,text="A-Z", value=4, command=self.a_z_event,variable=distance_value)
+        self.az_rb.pack_forget()
+        self.pog_z_rb = tk.Radiobutton(root,text="Pog-Z", value=5, command=self.pog_z_event,variable=distance_value)
+        self.pog_z_rb.pack_forget()
+
+
+    def find_the_plane(self):
+        '''기준 평면 구하는 함수'''
+        op_plane = two_point_middle_point_plane(canvas=self.canvas,ax=self.ax,root=self.root,
+                                        point1=self.u6L,point2=self.u6R,middle_point1=self.u1R,middle_point2=self.u1L,
                                         label='OP plane',color='green')
-    op_plane = OP_plane.plane()
-    OP_plane.plot()
-def sp_plane_event():
-    global sp_plane
-    solve_SP_plane = SP_Plane(canvas=canvas,ax=ax,root=root,
-                          n_point=N_point, s_point=S_point,FH_plane=fh_plane,
+        self.OP_plane = op_plane.plane() #평면 결정
+
+        fh_plane = two_point_middle_point_plane(canvas=self.canvas, ax=self.ax, root=self.root,
+                                        point1=self.OrR,point2=self.OrL,middle_point1=self.PoR, middle_point2=self.PoL,
+                                        label='FH plane',color="None")
+        self.FH_plane = fh_plane.plane()
+
+        sp_plane = SP_Plane(canvas=self.canvas,ax=self.ax,root=self.root,
+                          n_point=self.n_point, s_point=self.s_point,FH_plane=self.FH_plane,
                           label='SP plane', color='skyblue')
-    sp_plane = solve_SP_plane.plane()
-    solve_SP_plane.plot()
-def XZ_plane_event():
-    solve_XZ_plane = XZ_plane(canvas=canvas, ax=ax,root=root,
-                          FH_plane=fh_plane,n_point=N_point,
-                          label='XZ plane', color='violet')
-    solve_XZ_plane.plot()
-def xy_plane_event():
-    global coronal_plane
-    solve_xy_plane = XY_plane(canvas=canvas, ax=ax, root=root,
-                          FH_plane=fh_plane, SP_plane=sp_plane,n_point=N_point,
+        self.SP_plane = sp_plane.plane() #평면 결정
+
+        xz_plane = XZ_Plane(canvas=self.canvas, ax=self.ax,root=self.root,FH_plane=self.FH_plane,n_point=self.n_point, label='XZ plane', color='violet')
+        self.XZ_plane = xz_plane.plane()
+
+        xy_plane = XY_Plane(canvas=self.canvas, ax=self.ax, root=self.root,
+                          FH_plane=self.FH_plane, SP_plane=self.SP_plane ,n_point=self.n_point,
                           label='xy plane', color='yellowgreen')
-    coronal_plane = solve_xy_plane.plane()
-    solve_xy_plane.plot()
+        self.XY_plane = xy_plane.plane()
 
-#angle값 밑에 찍어주고, canvas에 도형 그리기
-def sna_event():
-    sna = Three_point_angle(canvas=canvas, ax=ax, root=root,
-                    point1=S_point, point2=N_point, point3=A_point,
-                    label='SNA')
-    sna.draw_event()
-def snb_event():
-    snb = Three_point_angle(canvas=canvas, ax=ax, root=root,
-                        point1=S_point, point2=N_point, point3=B_point,
-                        label='SNB')
-    snb.draw_event()
-def anb_event():
-    anb = Three_point_angle(canvas=canvas, ax=ax, root=root,
-                        point1=A_point, point2=N_point, point3=B_point,
-                        label='ANB')
-    anb.draw_event()
-def u1_sn_event():
-    solve_sn_plane = SP_Plane(canvas=canvas,ax=ax,root=root,
-                    n_point=N_point,s_point=S_point,FH_plane=sp_plane,
-                    label="SN plane",color='purple') #U1-SN에 필요한 Sn plane 구하기
-    sn_plane = solve_sn_plane.plane()
-    u1sn = Point_and_plane_angle(canvas=canvas,ax=ax,root=root,
-                                point1=U1R,point2=U1RA,plane=sn_plane,label='U1-SN')
-    u1sn.draw_event()
-def op_fh_angle_event():
-    op_fh_angle = Two_Plane_Angle(canvas=canvas, ax=ax, root=root,
-                              plane1=op_plane,plane2=fh_plane,label='OP-FH')
-    op_fh_angle.draw_event()
     
-#distance 밑에 찍어주고, canvas에 도형 그리기
-def overjet_event():
-    overjet = Two_point_distance(root=root, canvas=canvas,ax=ax,
-                             point1=U1R,point2=L1R,label="overjet")
-    overjet.draw_event()
-def overbite_event():
-    overbite = Two_point_distance(root=root, canvas=canvas,ax=ax,
-                             point1=U1R,point2=L1R,label="overbite")
-    overbite.draw_event()
-def u1z_event():
-    u1z = Point_and_Plane_distance(root=root,canvas=canvas,ax=ax,
-                               point=U1R,plane=coronal_plane,label='U1-Z')
-    u1z.draw_event()
-def a_z_event():
-    a_z = Point_and_Plane_distance(root=root,canvas=canvas,ax=ax,
-                               point=A_point,plane=coronal_plane,label='A-Z')
-    a_z.draw_event()
-def pog_z_event():
-    pog_z = Point_and_Plane_distance(root=root,canvas=canvas,ax=ax,
-                               point=POG,plane=coronal_plane,label='Pog-Z')
-    pog_z.draw_event()
-#---------------3d cube 그리기---------------
-fig = plt.Figure(figsize=(5, 5), tight_layout=True) #3d cube 그릴 캔버스 생성
-ax = fig.add_subplot(111, projection='3d') #canvas 3D로 변경
-canvas = FigureCanvasTkAgg(fig, master=root)
-canvas_widget = canvas.get_tk_widget()
-canvas_widget.pack(side=tk.LEFT, fill=tk.BOTH, expand=1) #캔버스 화면 좌측에 고정시키기
-plot_cube(ax) #cube 그리기
 
-#---------------파일 받거나 plot 삭제할 button 만들기---------------
-input_button = tk.Button(root, text="txt파일 받아오기",command=input_file_event)
-input_label = tk.Label(root,text="파일은 오스템 데이터 기준으로 읽어냅니다")
-input_label2 = tk.Label(root, text="혹시 다른 데이터를 넣고 싶다면, 오스템 data format으로 변경해주셔야 합니다.")
-input_button.pack(side=tk.TOP)
-input_label.pack()
-input_label2.pack()
+    def input_file_event(self):
+        file = filedialog.askopenfilename()
+        self.n_point,self.s_point,self.OrR,self.OrL,self.PoR,self.PoL,self.u1R,self.u1L,self.u1RA,self.u1LA,self.u6R,self.u6L,self.L1R,self.L1AR,self.a_point,self.b_point,self.pog = input_file(file)
+        # 파일에서 불러오자마자 평면 구해서 저장해두기
+        self.find_the_plane()
 
-delete_button = tk.Button(root, text="plot reset",command=delete,height=5,width=10,bg='red',fg='white')
-delete_button.pack(side=tk.BOTTOM,pady=10)
+    def plane_cb_event(self):
+        global plane
+        '''plane을 구하는 checkbutton 눌렀을 때 실행시킬 이벤트함수'''
+        if plane==0:
+            self.fh_plane_rb.pack()
+            self.op_plane_rb.pack()
+            self.sp_plane_rb.pack()
+            self.xz_plane_rb.pack()
+            self.xy_plane_rb.pack()
+            plane += 1
 
-#---------------해당 연산과 관련된 radio button 보여줄checkbutton---------------
-plane_ckbutton = tk.Checkbutton(root, text="평면 구하기",command=plane_cb_event)
-plane_ckbutton.pack()
-angle_ckbutton = tk.Checkbutton(root, text="각도 구하기",command=angle_ck_event)
-angle_ckbutton.pack()
-distance_ckbutton = tk.Checkbutton(root, text="거리 구하기",command=distnace_ck_event)
-distance_ckbutton.pack()
+        elif plane==1:
+            self.fh_plane_rb.pack_forget()
+            self.op_plane_rb.pack_forget()
+            self.sp_plane_rb.pack_forget()
+            self.xz_plane_rb.pack_forget()
+            self.xy_plane_rb.pack_forget()
 
-#---------------평면 구하기---------------
-plane_value = tk.IntVar()
+            plane = 0
 
-FH_Plane_button = tk.Radiobutton(root,text="FH 평면 구하기",value=1,command=fh_plane_event,variable=plane_value)
-FH_Plane_button.pack_forget()
+    def angle_cb_event(self):
+        global angle
+        '''각도 구하는 checkbutton 눌렀을 때 실행시키는 이벤트함수'''
+        if angle==0:
+            self.sna_rb.pack()
+            self.snb_rb.pack()
+            self.anb_rb.pack()
+            self.u1sn_rb.pack()
+            self.opfh_rb.pack()
+            angle += 1
+        elif angle==1:
+            self.sna_rb.pack_forget()
+            self.snb_rb.pack_forget()
+            self.anb_rb.pack_forget()
+            self.u1sn_rb.pack_forget()
+            self.opfh_rb.pack_forget()
+            angle = 0
 
-OP_Plane_button = tk.Radiobutton(root, text='OP 평면 구하기',value=2,command=op_plane_event,variable=plane_value)
-OP_Plane_button.pack_forget()
+    def distnace_cb_event(self):
+        global distance
+        '''거리 구하는 checkbutton 눌렀을 때 실행시키는 이벤트함수'''
+        if distance==0:
+            self.overjet_rb.pack()
+            self.overbite_rb.pack()
+            self.u1z_rb.pack()
+            self.az_rb.pack()
+            self.pog_z_rb.pack()
+            distance += 1
+        elif distance==1:
+            self.overjet_rb.pack_forget()
+            self.overbite_rb.pack_forget()
+            self.u1z_rb.pack_forget()
+            self.az_rb.pack_forget()
+            self.pog_z_rb.pack_forget()
+            distance=0
 
-SP_plane_button = tk.Radiobutton(root, text='SP 평면 구하기',value=3,command=sp_plane_event,variable=plane_value)
-SP_plane_button.pack_forget()
+    def fh_plane_event(self):
+        '''fh plane 라디오 버튼 클릭하면 화면에 plane 그리고, label 출력하기'''
+        self.fH_label= draw_plane(root=self.root, ax=self.ax, plane=self.FH_plane,label='FH plane',
+                   color='green')
+        self.fH_label.pack()
+        draw_point(self.ax,point=self.u6L)
+        draw_point(self.ax,point=self.u6R)
+        middle_point = middle_two_point(point1=self.PoR, point2=self.PoL)
+        draw_point(self.ax,point=middle_point)
+        self.canvas.draw()
 
-XZ_plane_button = tk.Radiobutton (root, text='XZ 평면 구하기',value=4,command=XZ_plane_event,variable=plane_value)
-XZ_plane_button.pack_forget()
+    def op_plane_event(self):
+        '''op plane 라디오 버튼 클릭하면 화면에 plane 그리고, label 출력하기'''
+        self.op_label = draw_plane(root=self.root,ax=self.ax,plane=self.OP_plane, label=f'OP plane')
+        self.op_label.pack()
+        draw_point(self.ax,point=self.u6L)
+        draw_point(self.ax,point=self.u6R)
+        middle_point = middle_two_point(point1=self.u1R, point2=self.u1L) 
+        draw_point(self.ax,point=middle_point)
+        self.canvas.draw()
 
-XY_plane_button = tk.Radiobutton(root, text='XY 평면 구하기',value=5,command=xy_plane_event,variable=plane_value)
-XY_plane_button.pack_forget()
+    def sp_plane_event(self):
+        '''sp plane 라디오 버튼 클릭하면 화면에 plane 그리고, label 출력하기'''
+        self.sp_label = draw_plane(root=self.root,ax=self.ax,plane=self.SP_plane,
+                           label=f'SP plane', color='skyblue')
+        self.sp_label.pack()
+        draw_point(ax=self.ax, point=self.n_point)
+        draw_point(ax=self.ax, point=self.s_point)
+        self.canvas.draw()
+    
+    def xz_plane_event(self):
+        '''xz plane 라디오 버튼 클릭하면 화면에 plane 그리고, label 출력하기'''
+        self.xz_label = draw_plane(root=self.root,ax=self.ax,plane=self.XZ_plane,
+                           label=f'XZ plane', color='violet')
+        self.xz_label.pack()
+        draw_point(ax=self.ax, point=self.n_point)
+        self.canvas.draw()
 
-#---------------각도 구하기---------------
-angle_value = tk.IntVar()
-three_point_angle1 = tk.Radiobutton(root,text="SNA", value=1, command=sna_event,variable=angle_value)
-three_point_angle1.pack_forget()
+    def xy_plane_event(self):
+        '''xy plane 라디오 버튼 클릭하면 화면에 plane 그리고, label 출력하기'''
+        self.xy_label = draw_plane(root=self.root,ax=self.ax,plane=self.XY_plane,
+                           label=f'XY plane', color='yellowgreen')
+        self.xy_label.pack()
+        draw_point(ax=self.ax, point=self.n_point)
+        self.canvas.draw()
 
-three_point_angle2 = tk.Radiobutton(root,text="SNB", value=2, command=snb_event,variable=angle_value)
-three_point_angle2.pack_forget()
+    #angle radio event function
+    def sna_event(self):
+        '''sna 라디오 버튼 클릭하면 sna 값 구하고, 점 찍기'''
+        SNA = Three_point_angle(canvas=self.canvas, ax=self.ax, root=self.root,
+                                 point1=self.s_point, point2=self.n_point, point3=self.a_point,
+                                 label="SNA")
+        self.SNA_label = tk.Label(self.root, text=f"SNA 각도:{SNA.angle()}")
+        self.SNA_label.pack()
+        draw_point(ax=self.ax,point=self.s_point,color='red')
+        draw_point(ax=self.ax,point=self.n_point,color='green')
+        draw_point(ax=self.ax,point=self.a_point,color='blue')
+        self.canvas.draw()
+    
+    def snb_event(self):
+        SNB = Three_point_angle(canvas=self.canvas, ax=self.ax, root=self.root,
+                                 point1=self.s_point, point2=self.n_point, point3=self.b_point,
+                                 label="SNA")
+        self.SNB_label = tk.Label(self.root, text=f"SNA 각도:{SNB.angle()}")
+        self.SNB_label.pack()
+        draw_point(ax=self.ax,point=self.s_point,color='red')
+        draw_point(ax=self.ax,point=self.n_point,color='green')
+        draw_point(ax=self.ax,point=self.b_point,color='blue')
+        self.canvas.draw()
 
-three_point_angle3 = tk.Radiobutton(root,text="ANB", value=3, command=anb_event,variable=angle_value)
-three_point_angle3.pack_forget()
+    def anb_event(self):
+        ANB = Three_point_angle(canvas=self.canvas, ax=self.ax, root=self.root,
+                                 point1=self.a_point, point2=self.n_point, point3=self.b_point,
+                                 label="SNA")
+        self.ANB_label = tk.Label(self.root, text=f"SNA 각도:{ANB.angle()}")
+        self.ANB_label.pack()
+        draw_point(ax=self.ax,point=self.a_point,color='red')
+        draw_point(ax=self.ax,point=self.n_point,color='green')
+        draw_point(ax=self.ax,point=self.b_point,color='blue')
+        self.canvas.draw()
+        
+    def u1_sn_event(self):
+        sn_plane = SP_Plane(canvas=self.canvas, ax=self.ax, root=self.root,
+                    n_point=self.n_point,s_point=self.s_point,FH_plane=self.SP_plane,
+                    label="SN plane",color='purple') #U1-SN에 필요한 Sn plane 구하기
+        self.SN_plane=sn_plane.plane()
+        U1SN = Point_and_plane_angle(canvas=self.canvas, ax=self.ax, root=self.root,
+                                point1=self.u1R,point2=self.u1RA,plane=self.SN_plane,label='U1-SN')
+        self.U1SN_label = tk.Label(self.root, text=f"U1SN 각도:{U1SN.angle()}")
+        self.U1SN_label.pack()
+        draw_point(ax=self.ax,point=self.u1R,color='red')
+        draw_point(ax=self.ax,point=self.u1RA,color='blue')
+        draw_line(ax=self.ax, point1=self.u1R,point2=self.u1RA)
+        draw_plane(root=self.root, ax=self.ax,plane=self.SN_plane,label='SN plane')
+        self.canvas.draw()
 
-point_and_plane_angle1 = tk.Radiobutton(root,text="U1-SN", value=4, command=u1_sn_event,variable=angle_value)
-point_and_plane_angle1.pack_forget()
-# lmpa = Point_and_plane_angle(canvas=canvas,ax=ax,root=root,
-#                              point1=L1R,point2=U1RA,plane=sn_plane,label='1MPA')
-# point_and_plane_angle2 = tk.Radiobutton(root,text="1MPA", value=5, command=None,variable=angle_value)
-# point_and_plane_angle2.pack()
+    def op_fh_angle_event(self):
+        OP_FH = Two_Plane_Angle(canvas=self.canvas, ax=self.ax, root=self.root,
+                              plane1=self.OP_plane,plane2=self.FH_plane,label='OP-FH')
+        self.OPFH_label =  tk.Label(self.root, text=f"OP_FH 각도:{OP_FH.angle()}")
+        self.OPFH_label.pack()
+        draw_plane(root=self.root,ax=self.ax,plane=self.OP_plane,label='OP plane')
+        draw_plane(root=self.root,ax=self.ax,plane=self.FH_plane,label='OP plane',color='yellow')
+        self.canvas.draw()
 
-plane_and_plane_angle = tk.Radiobutton(root,text="OP-FH", value=6, command=op_fh_angle_event,variable=angle_value)
-plane_and_plane_angle.pack_forget()
+    def overjet_event(self):
+        overjet = Two_point_distance(root=self.root, canvas=self.canvas,ax=self.ax,
+                             point1=self.u1R,point2=self.L1R,label="overjet")
+        self.overjet_label = tk.Label(self.root, text=f"overjet 거리: {overjet.distance()}")
+        self.overjet_label.pack()
+        draw_point(ax=self.ax, point=self.L1R)
+        draw_point(ax=self.ax, point=self.u1R, color='green')
+        self.canvas.draw()
+         
+    def overbite_event(self):
+        overbite = Two_point_distance(root=self.root, canvas=self.canvas,ax=self.ax,
+                             point1=self.u1R,point2=self.L1R,label="overbite")
+        self.overbite_label = tk.Label(self.root, text=f"overbite 거리: {overbite.distance()}")
+        self.overbite_label.pack()
+        draw_point(ax=self.ax, point=self.L1R)
+        draw_point(ax=self.ax, point=self.u1R, color='green')
+        self.canvas.draw()
 
-#---------------거리 구하기---------------
-point_distance1 = tk.Radiobutton(root,text="Overjet", value=7, command=overjet_event,variable=angle_value)
-point_distance1.pack_forget()
+    def u1z_event(self):
+        u1z = Point_and_Plane_distance(root=self.root, canvas=self.canvas,ax=self.ax,
+                               point=self.u1R,plane=self.XY_plane,label='U1-Z')
+        self.u1z_label = tk.Label(self.root, text=f"u1z 거리: {u1z.distance()}")
+        self.u1z_label.pack()
+        draw_point(ax=self.ax, point=self.u1R)
+        draw_plane(root=self.root, ax=self.ax, plane=self.XY_plane,label='Coronal')
+        self.canvas.draw()
 
-point_distance2 = tk.Radiobutton(root,text="Overbite", value=8, command=overbite_event,variable=angle_value)
-point_distance2.pack_forget()
+    def a_z_event(self):
+        a_z = Point_and_Plane_distance(root=self.root, canvas=self.canvas,ax=self.ax,
+                               point=self.a_point,plane=self.XY_plane,label='A-Z')
+        self.a_z_label = tk.Label(self.root, text=f"u1z 거리: {a_z.distance()}")
+        self.a_z_label.pack()
+        draw_point(ax=self.ax, point=self.u1R)
+        draw_plane(root=self.root, ax=self.ax, plane=self.XY_plane,label='Coronal')
+        self.canvas.draw()
 
-point_and_plane_distance1 = tk.Radiobutton(root,text="U1-Z", value=9, command=u1z_event,variable=angle_value)
-point_and_plane_distance1.pack_forget()
+    def pog_z_event(self):
+        pogz = Point_and_Plane_distance(root=self.root, canvas=self.canvas,ax=self.ax,
+                               point=self.a_point,plane=self.XY_plane,label='POG-Z')
+        self.pogz_label = tk.Label(self.root, text=f"u1z 거리: {pogz.distance()}")
+        self.pogz_label.pack()
+        draw_point(ax=self.ax, point=self.a_point)
+        draw_plane(root=self.root, ax=self.ax, plane=self.XY_plane,label='Coronal')
+        self.canvas.draw()
 
-point_and_plane_distance2 = tk.Radiobutton(root,text="A-Z", value=10, command=a_z_event,variable=angle_value)
-point_and_plane_distance2.pack_forget()
-
-point_and_plane_distance3 = tk.Radiobutton(root,text="Pog-Z", value=11, command=pog_z_event,variable=angle_value)
-point_and_plane_distance3.pack_forget()
-
-root.mainloop()
+    def delete(self):
+        self.ax.clear()
+        plot_cube(self.ax)
+        self.canvas.draw()
+        #delete 누르면 label들도 다 삭제
+        self.fH_label.after(1,self.fH_label.destroy())
+        self.op_label.after(1,self.op_label.destroy())
+        self.sp_label.after(1,self.sp_label.destroy())
+        self.xz_label.after(1,self.xz_label.destroy())
+        self.xy_label.after(1,self.xy_label.destroy())
+        self.SNA_label.after(1,self.SNA_label.destroy())
+        self.SNB_label.after(1,self.SNB_label.destroy())
+        self.ANB_label.after(1,self.ANB_label.destroy())
+        self.U1SN_label.after(1,self.U1SN_label.destroy())
+        self.OPFH_label.after(1,self.OPFH_label.destroy())
+        self.overjet_label.after(1,self.overjet_label.destroy())
+        self.overbite_label.after(1,self.overbite_label.destroy())
+        self.u1z_label.after(1,self.u1z_label.destroy())
+        self.a_z_label.after(1,self.a_z_label.destroy())
+        self.pogz_label.after(1,self.pogz_label.destroy())
+        
+        
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = App(root)
+    root.mainloop()

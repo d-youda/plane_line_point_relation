@@ -1,5 +1,4 @@
 import numpy as np
-from math import gcd
 
 def three_point_plane(point1, point2, point3):
     '''세 점을 지나는 평면의 방정식 구하기'''

@@ -29,6 +29,10 @@ class two_point_middle_point_plane():
         draw_point(self.ax,point=self.point2)
         draw_point(self.ax,point=self.middle_point)
         A,B,C,D = self.plane()
+        A = round(A,8) #소수점 8번째 자리에서 끊기
+        B = round(B,8) #소수점 8번째 자리에서 끊기
+        C = round(C,8) #소수점 8번째 자리에서 끊기
+        D = round(D,8) #소수점 8번째 자리에서 끊기
         plane = np.array([A,B,C,D])
         label = draw_plane(root=self.root,ax=self.ax,plane=plane,
                            label=f'{self.label}', color=self.color)
@@ -58,13 +62,17 @@ class SP_Plane():
         draw_point(ax=self.ax, point=self.s_point)
         #새 plane 그리기
         A,B,C,D = self.plane()
+        A = round(A,8) #소수점 8번째 자리에서 끊기
+        B = round(B,8) #소수점 8번째 자리에서 끊기
+        C = round(C,8) #소수점 8번째 자리에서 끊기
+        D = round(D,8) #소수점 8번째 자리에서 끊기
         plane = np.array([A,B,C,D])
         label = draw_plane(root=self.root,ax=self.ax,plane=plane,
                            label=f'{self.label}', color=self.color)
         label.pack()
         self.canvas.draw()
 
-class XZ_plane():
+class XZ_Plane():
     def __init__(self,canvas,ax,root,FH_plane, n_point,label,color):
         self.canvas = canvas
         self.ax = ax
@@ -80,13 +88,17 @@ class XZ_plane():
     def plot(self):
         draw_point(ax=self.ax, point=self.n_point)
         A,B,C,D = self.plane()
+        A = round(A,8) #소수점 8번째 자리에서 끊기
+        B = round(B,8) #소수점 8번째 자리에서 끊기
+        C = round(C,8) #소수점 8번째 자리에서 끊기
+        D = round(D,8) #소수점 8번째 자리에서 끊기
         plane = np.array([A,B,C,D])
         label = draw_plane(root=self.root,ax=self.ax,plane=plane,
                            label=f'{self.label}', color=self.color)
         label.pack()
         self.canvas.draw()
 
-class XY_plane():
+class XY_Plane():
     def __init__(self,canvas,ax,root,FH_plane,SP_plane,n_point,label,color):
         self.canvas = canvas
         self.ax = ax
@@ -104,6 +116,10 @@ class XY_plane():
     def plot(self):
         draw_point(ax=self.ax, point=self.n_point)
         A,B,C,D = self.plane()
+        A = round(A,8) #소수점 8번째 자리에서 끊기
+        B = round(B,8) #소수점 8번째 자리에서 끊기
+        C = round(C,8) #소수점 8번째 자리에서 끊기
+        D = round(D,8) #소수점 8번째 자리에서 끊기
         plane = np.array([A,B,C,D])
         label = draw_plane(root=self.root,ax=self.ax,plane=plane,
                            label=f'{self.label}', color=self.color)

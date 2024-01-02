@@ -17,14 +17,6 @@ class Three_point_angle():
     def angle(self):
         angle = point.three_point_angle_solve(point1=self.point1,point2=self.point2, point3=self.point3)
         return angle
-    
-    def draw_event(self):
-        angle_label = tk.Label(self.root, text=f"{self.label} 각도:{self.angle()}")
-        angle_label.pack()
-        draw_point(ax=self.ax,point=self.point1,color='red')
-        draw_point(ax=self.ax,point=self.point2,color='green')
-        draw_point(ax=self.ax,point=self.point3,color='blue')
-        self.canvas.draw()
 
 class Point_and_plane_angle():
     def __init__(self,canvas,ax,root,point1,point2,plane,label):

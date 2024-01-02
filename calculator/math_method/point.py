@@ -1,9 +1,9 @@
 import numpy as np
 import math
-def two_point_distance(point1, point2):
-    #두 점의 거리 = 두 점을 이은 벡터의 크기와 같다.
-    distance = np.linalg.norm(np.array(point2) - np.array(point1))
-    return distance
+# def two_point_distance(point1, point2):
+#     #두 점의 거리 = 두 점을 이은 벡터의 크기와 같다.
+#     distance = np.linalg.norm(np.array(point2) - np.array(point1))
+#     return distance
 def overjet(point1,point2):
     #overjet은 두 점의 y축에서의 거리와 같다.
     y1 = point1[1]
