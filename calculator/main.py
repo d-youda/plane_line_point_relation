@@ -48,6 +48,7 @@ class App():
         self.FH_plane = np.array([0,0,0,0])
         self.OP_plane = np.array([0,0,0,0])
         self.SN_plane = np.array([0,0,0,0])
+
         self.fH_label = tk.Label()
         self.op_label = tk.Label()
         self.sp_label = tk.Label()
@@ -105,29 +106,29 @@ class App():
         self.xy_plane_rb.pack_forget()
 
         #angle radio button(check box 선택하면 나오도록 하기 위해 forget해두기)
-        angle_value = tk.IntVar()
-        self.sna_rb = tk.Radiobutton(root,text="SNA", value=1, command=self.sna_event,variable=angle_value)
+        # angle_value = tk.IntVar()
+        self.sna_rb = tk.Radiobutton(root,text="SNA", value=6, command=self.sna_event,variable=plane_value)
         self.sna_rb.pack_forget()
-        self.snb_rb = tk.Radiobutton(root,text="SNB", value=2, command=self.snb_event,variable=angle_value)
+        self.snb_rb = tk.Radiobutton(root,text="SNB", value=7, command=self.snb_event,variable=plane_value)
         self.snb_rb.pack_forget()
-        self.anb_rb = tk.Radiobutton(root,text="ANB", value=3, command=self.anb_event,variable=angle_value)
+        self.anb_rb = tk.Radiobutton(root,text="ANB", value=8, command=self.anb_event,variable=plane_value)
         self.anb_rb.pack_forget()
-        self.u1sn_rb = tk.Radiobutton(root,text="U1-SN", value=4, command=self.u1_sn_event,variable=angle_value)
+        self.u1sn_rb = tk.Radiobutton(root,text="U1-SN", value=9, command=self.u1_sn_event,variable=plane_value)
         self.u1sn_rb.pack_forget()
-        self.opfh_rb = tk.Radiobutton(root,text="OP-FH", value=5, command=self.op_fh_angle_event,variable=angle_value)
+        self.opfh_rb = tk.Radiobutton(root,text="OP-FH", value=10, command=self.op_fh_angle_event,variable=plane_value)
         self.opfh_rb.pack_forget()
         
         #distance radio button(check box 선택하면 나오도록 하기 위해 forget해두기)
-        distance_value = tk.IntVar()
-        self.overjet_rb = tk.Radiobutton(root,text="Overjet", value=1, command=self.overjet_event,variable=distance_value)
+        # distance_value = tk.IntVar()
+        self.overjet_rb = tk.Radiobutton(root,text="Overjet", value=11, command=self.overjet_event,variable=plane_value)
         self.overjet_rb.pack_forget()
-        self.overbite_rb = tk.Radiobutton(root,text="Overbite", value=2, command=self.overbite_event,variable=distance_value)
+        self.overbite_rb = tk.Radiobutton(root,text="Overbite", value=12, command=self.overbite_event,variable=plane_value)
         self.overbite_rb.pack_forget()
-        self.u1z_rb = tk.Radiobutton(root,text="U1-Z", value=3, command=self.u1z_event,variable=distance_value)
+        self.u1z_rb = tk.Radiobutton(root,text="U1-Z", value=13, command=self.u1z_event,variable=plane_value)
         self.u1z_rb.pack_forget()
-        self.az_rb = tk.Radiobutton(root,text="A-Z", value=4, command=self.a_z_event,variable=distance_value)
+        self.az_rb = tk.Radiobutton(root,text="A-Z", value=14, command=self.a_z_event,variable=plane_value)
         self.az_rb.pack_forget()
-        self.pog_z_rb = tk.Radiobutton(root,text="Pog-Z", value=5, command=self.pog_z_event,variable=distance_value)
+        self.pog_z_rb = tk.Radiobutton(root,text="Pog-Z", value=15, command=self.pog_z_event,variable=plane_value)
         self.pog_z_rb.pack_forget()
 
 
@@ -282,8 +283,8 @@ class App():
     def snb_event(self):
         SNB = Three_point_angle(canvas=self.canvas, ax=self.ax, root=self.root,
                                  point1=self.s_point, point2=self.n_point, point3=self.b_point,
-                                 label="SNA")
-        self.SNB_label = tk.Label(self.root, text=f"SNA 각도:{SNB.angle()}")
+                                 label="SNB")
+        self.SNB_label = tk.Label(self.root, text=f"SNB 각도:{SNB.angle()}")
         self.SNB_label.pack()
         draw_point(ax=self.ax,point=self.s_point,color='red')
         draw_point(ax=self.ax,point=self.n_point,color='green')
@@ -293,8 +294,8 @@ class App():
     def anb_event(self):
         ANB = Three_point_angle(canvas=self.canvas, ax=self.ax, root=self.root,
                                  point1=self.a_point, point2=self.n_point, point3=self.b_point,
-                                 label="SNA")
-        self.ANB_label = tk.Label(self.root, text=f"SNA 각도:{ANB.angle()}")
+                                 label="ANB")
+        self.ANB_label = tk.Label(self.root, text=f"ANB 각도:{ANB.angle()}")
         self.ANB_label.pack()
         draw_point(ax=self.ax,point=self.a_point,color='red')
         draw_point(ax=self.ax,point=self.n_point,color='green')

@@ -239,34 +239,34 @@ XY_plane_button = tk.Radiobutton(root, text='XY 평면 구하기',value=5,comman
 XY_plane_button.pack_forget()
 
 #---------------각도 구하기---------------
-angle_value = tk.IntVar()
-three_point_angle1 = tk.Radiobutton(root,text="SNA", value=1, command=sna_event,variable=angle_value)
+# angle_value = tk.IntVar()
+three_point_angle1 = tk.Radiobutton(root,text="SNA", value=1, command=sna_event,variable=plane_value)
 three_point_angle1.pack_forget()
 
-three_point_angle2 = tk.Radiobutton(root,text="SNB", value=2, command=snb_event,variable=angle_value)
+three_point_angle2 = tk.Radiobutton(root,text="SNB", value=2, command=snb_event,variable=plane_value)
 three_point_angle2.pack_forget()
 
-three_point_angle3 = tk.Radiobutton(root,text="ANB", value=3, command=anb_event,variable=angle_value)
+three_point_angle3 = tk.Radiobutton(root,text="ANB", value=3, command=anb_event,variable=plane_value)
 three_point_angle3.pack_forget()
 
-point_and_plane_angle1 = tk.Radiobutton(root,text="U1-SN", value=4, command=u1_sn_event,variable=angle_value)
+point_and_plane_angle1 = tk.Radiobutton(root,text="U1-SN", value=4, command=u1_sn_event,variable=plane_value)
 point_and_plane_angle1.pack_forget()
 # lmpa = Point_and_plane_angle(canvas=canvas,ax=ax,root=root,
 #                              point1=L1R,point2=U1RA,plane=sn_plane,label='1MPA')
 # point_and_plane_angle2 = tk.Radiobutton(root,text="1MPA", value=5, command=None,variable=angle_value)
 # point_and_plane_angle2.pack()
 
-plane_and_plane_angle = tk.Radiobutton(root,text="OP-FH", value=6, command=op_fh_angle_event,variable=angle_value)
+plane_and_plane_angle = tk.Radiobutton(root,text="OP-FH", value=6, command=op_fh_angle_event,variable=plane_value)
 plane_and_plane_angle.pack_forget()
 
 #---------------거리 구하기---------------
-point_distance1 = tk.Radiobutton(root,text="Overjet", value=7, command=overjet_event,variable=angle_value)
+point_distance1 = tk.Radiobutton(root,text="Overjet", value=7, command=overjet_event,variable=plane_value)
 point_distance1.pack_forget()
 
-point_distance2 = tk.Radiobutton(root,text="Overbite", value=8, command=overbite_event,variable=angle_value)
+point_distance2 = tk.Radiobutton(root,text="Overbite", value=8, command=overbite_event,variable=plane_value)
 point_distance2.pack_forget()
 
-point_and_plane_distance1 = tk.Radiobutton(root,text="U1-Z", value=9, command=u1z_event,variable=angle_value)
+point_and_plane_distance1 = tk.Radiobutton(root,text="U1-Z", value=9, command=u1z_event,variable=plane_value)
 point_and_plane_distance1.pack_forget()
 
 point_and_plane_distance2 = tk.Radiobutton(root,text="A-Z", value=10, command=a_z_event,variable=angle_value)
